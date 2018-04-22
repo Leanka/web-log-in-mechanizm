@@ -86,20 +86,26 @@ public class Login implements HttpHandler {
     }
 
     private void logIn(HttpExchange httpExchange, List<String> userData, String cookieData){
+        String clientIp = getClientIp(httpExchange);
+
         if(cookieData == null){ //if cookies were cleared, create new  //add handling login from new device
-            String newCookieId = logInService.firstLogIn(userData);
+            String newCookieId = logInService.firstLogIn(userData, clientIp);
             setResponseCookie(httpExchange, newCookieId);
 
         }else{
             String cookieId = getCookieId(cookieData);
 
-            if(!logInService.isCookieValidForCurrentUser(cookieId, userData)){ //if current cookie does not belong to user, who is loggin in
-                cookieId = logInService.getUsersCookieId(userData);
+            if(!logInService.isCookieValidForCurrentUser(cookieId, userData, clientIp)){ //if current cookie does not belong to user, who is loggin in
+                cookieId = logInService.getUsersCookieId(userData, clientIp);
                 setResponseCookie(httpExchange, cookieId);
             }
 
             logInService.nextLogIn(cookieId);
         }
+    }
+
+    private String getClientIp(HttpExchange httpExchange){
+        return httpExchange.getLocalAddress().toString().replaceAll("/", "");
     }
 
     private void setResponseCookie(HttpExchange httpExchange, String cookieId){
