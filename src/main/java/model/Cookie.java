@@ -6,11 +6,13 @@ public class Cookie {
     private String id;
     private Integer userId;
     private String cookieCustomSettings;
+    private String clientIp;
 
-    public Cookie(String id, Integer userId, String cookieCustomSettings) {
+    public Cookie(String id, Integer userId, String cookieCustomSettings, String clientIp) {
         this.id = id;
         this.userId = userId;
         this.cookieCustomSettings = cookieCustomSettings;
+        this.clientIp = clientIp;
     }
 
     public String getId() {
@@ -25,16 +27,6 @@ public class Cookie {
         return cookieCustomSettings;
     }
 
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("Cookie{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(", userId=").append(userId);
-        sb.append(", cookieCustomSettings='").append(cookieCustomSettings).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
-
     public void setCookieCustomSettings(String cookieCustomSettings) {
         this.cookieCustomSettings = cookieCustomSettings;
     }
@@ -46,12 +38,24 @@ public class Cookie {
         Cookie cookie = (Cookie) o;
         return Objects.equals(getId(), cookie.getId()) &&
                 Objects.equals(getUserId(), cookie.getUserId()) &&
-                Objects.equals(getCookieCustomSettings(), cookie.getCookieCustomSettings());
+                Objects.equals(getCookieCustomSettings(), cookie.getCookieCustomSettings()) &&
+                Objects.equals(clientIp, cookie.clientIp);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getUserId(), getCookieCustomSettings());
+        return Objects.hash(getId(), getUserId(), getCookieCustomSettings(), clientIp);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Cookie{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", userId=").append(userId);
+        sb.append(", cookieCustomSettings='").append(cookieCustomSettings).append('\'');
+        sb.append(", clientIp='").append(clientIp).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }
