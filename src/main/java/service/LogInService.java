@@ -23,18 +23,18 @@ public class LogInService {
         return userDataController.validateUserData(userData.get(nameIndex), userData.get(passwordIndex));
     }
 
-    private void setDataBeforeFirstLogIn(Integer userId){
-        if(cookieController.getUserCookie(userId) != null) { //in case user cleared cookies remove old cookie from db
-            cookieController.removeCookie(userId);
+    private void setDataBeforeFirstLogIn(Integer userId, String clientIp){
+        if(cookieController.getUserCookie(userId, clientIp) != null) { //in case user cleared cookies remove old cookie from db
+            cookieController.removeCookie(userId, clientIp);
         }
-        cookieController.createNewCookie(userId);
-        sessionService.openNewSession(userId);
+        cookieController.createNewCookie(userId, clientIp);
+        sessionService.openNewSession(userId, clientIp);
     }
 
-    public String firstLogIn(List<String> userData){
+    public String firstLogIn(List<String> userData, String clientIp){
         Integer userId = userDataController.getUserId(userData.get(nameIndex), userData.get(passwordIndex));
-        setDataBeforeFirstLogIn(userId);
-        Cookie cookie = cookieController.getUserCookie(userId);
+        setDataBeforeFirstLogIn(userId, clientIp);
+        Cookie cookie = cookieController.getUserCookie(userId, clientIp);
         return cookie.getId();
     }
 
@@ -46,19 +46,21 @@ public class LogInService {
         }
     }
 
-    public boolean isCookieValidForCurrentUser(String cookieId, List<String> userData){
+    public boolean isCookieValidForCurrentUser(String cookieId, List<String> userData, String clientIp){ //valid String clientIp as well?
         Integer userId = userDataController.getUserId(userData.get(0), userData.get(1));
         Cookie browserCookie = cookieController.getCookie(cookieId);
-        return browserCookie.getUserId() == userId;
+        Cookie userCookie = cookieController.getUserCookie(userId, clientIp);
+//        return browserCookie.getUserId() == userId;
+        return browserCookie == userCookie;
     }
 
-    public String getUsersCookieId(List<String> userData){
+    public String getUsersCookieId(List<String> userData, String clientIp){
         Integer userId = userDataController.getUserId(userData.get(0), userData.get(1));
-        Cookie cookie = cookieController.getUserCookie(userId);
+        Cookie cookie = cookieController.getUserCookie(userId, clientIp);
 
         if(cookie == null){
-            cookieController.createNewCookie(userId);
-            cookie = cookieController.getUserCookie(userId);
+            cookieController.createNewCookie(userId, clientIp);
+            cookie = cookieController.getUserCookie(userId, clientIp);
         }
         return cookie.getId();
     }
