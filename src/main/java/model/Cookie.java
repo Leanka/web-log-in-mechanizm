@@ -27,6 +27,10 @@ public class Cookie {
         return cookieCustomSettings;
     }
 
+    public String getClientIp() {
+        return clientIp;
+    }
+
     public void setCookieCustomSettings(String cookieCustomSettings) {
         this.cookieCustomSettings = cookieCustomSettings;
     }
