@@ -59,7 +59,8 @@ public class Login implements HttpHandler {
 
         String response = template.render(model);
         sendResponse(httpExchange, response);
-        System.out.println(httpExchange.getLocalAddress()); ///ip:8007
+        System.out.println("From Local Address: " +  httpExchange.getLocalAddress()); ///ip:8007
+        sessionService.showAllSessions();
         }
 
     private  void sendResponse(HttpExchange httpExchange, String response) throws IOException{
