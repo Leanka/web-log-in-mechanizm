@@ -1,4 +1,6 @@
 import com.sun.net.httpserver.HttpServer;
+import handlers.Login;
+import handlers.Static;
 
 import java.net.InetSocketAddress;
 
