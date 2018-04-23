@@ -2,13 +2,15 @@
 <html>
 <head>
     <title>Log out</title>
-    <link rel="stylesheet" href="static/styles.css" />
+    <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body class="container">
-<span>Hello {{ userName }}  </span>
+<h1 class="content title">Hello {{ userName }}! </h1>
 <form class="contact-form" method="POST">
     <br><input type = "hidden" name = "action" value = "logout" />
-  <input type="submit" value="LogOut">
+  <span class="input-field button-input-field">
+    <input class="form-button" type="submit" value="Log Out">
+  </span>
 </form>
 </body>
 </html>
