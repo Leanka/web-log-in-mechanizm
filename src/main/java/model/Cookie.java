@@ -54,12 +54,10 @@ public class Cookie {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Cookie{");
-        sb.append("id='").append(id).append('\'');
+        final StringBuffer sb = new StringBuffer("Cookie: ");
+        sb.append("id=").append(id);
         sb.append(", userId=").append(userId);
-        sb.append(", cookieCustomSettings='").append(cookieCustomSettings).append('\'');
-        sb.append(", clientIp='").append(clientIp).append('\'');
-        sb.append('}');
+        sb.append(", ip=").append(clientIp);
         return sb.toString();
     }
 }
