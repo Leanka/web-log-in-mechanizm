@@ -44,14 +44,17 @@ public class SessionService {
                 deleteSession(cookie);
             }
         }
-        showAllSessions();
         return isSessionValid;
     }
 
-    private void showAllSessions(){ //test print to remove
+    public void showAllSessions(){ //test print to remove
         System.out.println("Active sessions:");
+
+        if(activeSessions.isEmpty()){
+            System.out.println("  No active sessions!");
+        }
         for(Map.Entry<Cookie, Session> entry: activeSessions.entrySet()){
-            System.out.println(entry.getKey() + " ---> " + entry.getValue());
+            System.out.println("  " + entry.getKey() + " ---> " + entry.getValue());
         }
         System.out.println();
     }
