@@ -18,7 +18,7 @@ public class SessionService {
         this.sessionController = sessionController;
     }
 
-    public void openNewSession(Integer userId, String clientIp){ //cookieId?
+    public void openNewSession(Integer userId, String clientIp){
         Cookie cookie = cookieController.getUserCookie(userId, clientIp);
 
         Session session = sessionController.createNewSession();
@@ -51,7 +51,7 @@ public class SessionService {
     private void showAllSessions(){ //test print to remove
         System.out.println("Active sessions:");
         for(Map.Entry<Cookie, Session> entry: activeSessions.entrySet()){
-            System.out.println(entry.getKey() + " ::: " + entry.getValue());
+            System.out.println(entry.getKey() + " ---> " + entry.getValue());
         }
         System.out.println();
     }
