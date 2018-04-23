@@ -47,15 +47,14 @@ public class LogInService {
     }
 
     public boolean isCookieValidForCurrentUser(String cookieId, List<String> userData, String clientIp){ //valid String clientIp as well?
-        Integer userId = userDataController.getUserId(userData.get(0), userData.get(1));
+        Integer userId = userDataController.getUserId(userData.get(nameIndex), userData.get(passwordIndex));
         Cookie browserCookie = cookieController.getCookie(cookieId);
         Cookie userCookie = cookieController.getUserCookie(userId, clientIp);
-//        return browserCookie.getUserId() == userId;
         return browserCookie == userCookie;
     }
 
     public String getUsersCookieId(List<String> userData, String clientIp){
-        Integer userId = userDataController.getUserId(userData.get(0), userData.get(1));
+        Integer userId = userDataController.getUserId(userData.get(nameIndex), userData.get(passwordIndex));
         Cookie cookie = cookieController.getUserCookie(userId, clientIp);
 
         if(cookie == null){
