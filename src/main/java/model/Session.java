@@ -34,11 +34,9 @@ public class Session {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Session{");
-        sb.append("sessionTimeInSeconds=").append(sessionTimeInSeconds);
-        sb.append(", id='").append(id).append('\'');
+        final StringBuffer sb = new StringBuffer("Session: ");
+        sb.append(", id=").append(id);
         sb.append(", expiration=").append(expiration);
-        sb.append('}');
         return sb.toString();
     }
 }
