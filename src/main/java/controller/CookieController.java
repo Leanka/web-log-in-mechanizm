@@ -11,24 +11,24 @@ public class CookieController {
         this.cookieDao = cookieDao;
     }
 
-    public Cookie getUserCookie(Integer userId, String clientIp){
-        return cookieDao.getUserCookie(userId, clientIp);
+    public Cookie getUserCookie(Integer userId){
+        return cookieDao.getUserCookie(userId);
     }
 
     public Cookie getCookie(String cookieId){
         return cookieDao.getCookie(cookieId);
     }
 
-    public void createNewCookie(Integer userId, String clientIp){
+    public void createNewCookie(Integer userId){
         String cookieId = IdProvider.getId();
-        cookieDao.addCookie(new Cookie(cookieId, userId, "cookieId=" + cookieId, clientIp));
+        cookieDao.addCookie(new Cookie(cookieId, userId, "cookieId=" + cookieId));
     }
 
     public void updateCookie(Cookie cookie){
         cookieDao.updateCookieSettings(cookie);
     }
 
-    public void removeCookie(Integer userId, String clientIp){
-        cookieDao.removeCookie(userId, clientIp);
+    public void removeCookie(Integer userId){
+        cookieDao.removeCookie(userId);
     }
 }

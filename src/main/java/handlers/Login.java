@@ -40,7 +40,7 @@ public class Login implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");  //get value assigned to Cookie reqst header
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
 
         JtwigModel model = JtwigModel.newModel();
         JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/login.twig");
@@ -89,17 +89,17 @@ public class Login implements HttpHandler {
     }
 
     private void logIn(HttpExchange httpExchange, List<String> userData, String cookieData){
-        String clientIp = getClientIp(httpExchange);
+//        String clientIp = getClientIp(httpExchange);
 
         if(cookieData == null){ //if cookies were cleared, create new  //add handling login from new device
-            String newCookieId = logInService.firstLogIn(userData, clientIp);
+            String newCookieId = logInService.firstLogIn(userData);
             setResponseCookie(httpExchange, newCookieId);
 
         }else{
             String cookieId = getCookieId(cookieData);
 
-            if(!logInService.isCookieValidForCurrentUser(cookieId, userData, clientIp)){ //if current cookie does not belong to user, who is loggin in
-                cookieId = logInService.getUsersCookieId(userData, clientIp);
+            if(!logInService.isCookieValidForCurrentUser(cookieId, userData)){ //if current cookie does not belong to user, who is loggin in
+                cookieId = logInService.getUsersCookieId(userData);
                 setResponseCookie(httpExchange, cookieId);
             }
 
@@ -123,7 +123,6 @@ public class Login implements HttpHandler {
         String[] pairs = formData.split("&");
         for(String pair : pairs){
             String[] keyValue = pair.split("=");
-            // We have to decode the value because it's urlencoded. see: https://en.wikipedia.org/wiki/POST_(HTTP)#Use_for_submitting_web_forms
             String value = URLDecoder.decode(keyValue[1], "ISO-8859-2");
             userData.add(value.trim());
         }

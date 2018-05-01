@@ -18,10 +18,12 @@ public class SessionService {
         this.sessionController = sessionController;
     }
 
-    public void openNewSession(Integer userId, String clientIp){
-        Cookie cookie = cookieController.getUserCookie(userId, clientIp);
+    public void openNewSession(Integer userId){
+        Cookie cookie = cookieController.getUserCookie(userId);
 
         Session session = sessionController.createNewSession();
+
+        cookie.
         activeSessions.put(cookie, session);
     }
 

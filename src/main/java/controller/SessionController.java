@@ -20,4 +20,8 @@ public class SessionController {
         session.updateSessionExpirationDate();
     }
 
+    public String getSessionId(Session session){
+        return session.getId();
+    }
+
 }

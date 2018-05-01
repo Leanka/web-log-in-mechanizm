@@ -15,21 +15,20 @@ public class CookieDao {
         this.connection = connection;
     }
 
-    public Cookie getUserCookie (int userId, String clientIp){
+    public Cookie getUserCookie (int userId){
         Cookie cookie = null;
-        String query = "SELECT * FROM cookies WHERE user_id = ? AND client_ip=?;";
+        String query = "SELECT * FROM cookies WHERE user_id = ?;";
 
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, userId);
-            preparedStatement.setString(2, clientIp);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if(!resultSet.isClosed()) {
                 String cookieId = resultSet.getString("id");
                 String customSettings = resultSet.getString("cookie");
 
-                cookie = new Cookie(cookieId, userId, customSettings, clientIp);
+                cookie = new Cookie(cookieId, userId, customSettings);
             }
 
         } catch (SQLException e) {
@@ -50,9 +49,8 @@ public class CookieDao {
             if(!resultSet.isClosed()) {
                 Integer userId = resultSet.getInt("user_id");
                 String customSettings = resultSet.getString("cookie");
-                String clientIp = resultSet.getString("client_ip");
 
-                cookie = new Cookie(cookieId, userId, customSettings, clientIp);
+                cookie = new Cookie(cookieId, userId, customSettings);
             }else {
                 System.out.println("resultSet closed for id: " + cookieId);
             }
@@ -64,7 +62,7 @@ public class CookieDao {
     }
 
     public void addCookie(Cookie cookie){
-        String query = "INSERT INTO cookies VALUES(?, ?, ?, ?);";
+        String query = "INSERT INTO cookies VALUES(?, ?, ?);";
 
         try {
 
@@ -73,7 +71,6 @@ public class CookieDao {
             preparedStatement.setString(1, cookie.getId());
             preparedStatement.setInt(2, cookie.getUserId());
             preparedStatement.setString(3, cookie.getCookieCustomSettings());
-            preparedStatement.setString(4, cookie.getClientIp());
 
             preparedStatement.executeUpdate();
 
@@ -99,14 +96,13 @@ public class CookieDao {
         }
     }
 
-    public void removeCookie(Integer userId, String clientIp){
-        String query = "DELETE FROM cookies WHERE user_id=? AND client_ip=?;";
+    public void removeCookie(Integer userId){
+        String query = "DELETE FROM cookies WHERE user_id=?;";
 
         try{
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, userId);
-            preparedStatement.setString(2, clientIp);
 
             preparedStatement.executeUpdate();
 

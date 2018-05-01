@@ -6,13 +6,11 @@ public class Cookie {
     private String id;
     private Integer userId;
     private String cookieCustomSettings;
-    private String clientIp;
 
-    public Cookie(String id, Integer userId, String cookieCustomSettings, String clientIp) {
+    public Cookie(String id, Integer userId, String cookieCustomSettings) {
         this.id = id;
         this.userId = userId;
         this.cookieCustomSettings = cookieCustomSettings;
-        this.clientIp = clientIp;
     }
 
     public String getId() {
@@ -27,10 +25,6 @@ public class Cookie {
         return cookieCustomSettings;
     }
 
-    public String getClientIp() {
-        return clientIp;
-    }
-
     public void setCookieCustomSettings(String cookieCustomSettings) {
         this.cookieCustomSettings = cookieCustomSettings;
     }
@@ -42,14 +36,13 @@ public class Cookie {
         Cookie cookie = (Cookie) o;
         return Objects.equals(getId(), cookie.getId()) &&
                 Objects.equals(getUserId(), cookie.getUserId()) &&
-                Objects.equals(getCookieCustomSettings(), cookie.getCookieCustomSettings()) &&
-                Objects.equals(clientIp, cookie.clientIp);
+                Objects.equals(getCookieCustomSettings(), cookie.getCookieCustomSettings());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getUserId(), getCookieCustomSettings(), clientIp);
+        return Objects.hash(getId(), getUserId(), getCookieCustomSettings());
     }
 
     @Override
@@ -57,7 +50,6 @@ public class Cookie {
         final StringBuffer sb = new StringBuffer("Cookie: ");
         sb.append("id=").append(id);
         sb.append(", userId=").append(userId);
-        sb.append(", ip=").append(clientIp);
         return sb.toString();
     }
 }
