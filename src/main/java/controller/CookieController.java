@@ -19,9 +19,12 @@ public class CookieController {
         return cookieDao.getCookie(cookieId);
     }
 
-    public void createNewCookie(Integer userId){
+    public Cookie createNewCookie(Integer userId){
         String cookieId = IdProvider.getId();
-        cookieDao.addCookie(new Cookie(cookieId, userId, "cookieId=" + cookieId));
+        Cookie newCookie = new Cookie(cookieId, userId, "cookieId=" + cookieId);
+
+        cookieDao.addCookie(newCookie);
+        return newCookie;
     }
 
     public void updateCookie(Cookie cookie){
