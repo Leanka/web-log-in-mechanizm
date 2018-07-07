@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.*;
 import java.net.*;
 import java.sql.Connection;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import controller.CookieController;
@@ -78,18 +79,20 @@ public class Login implements HttpHandler {
 
         if (parsedFormData.get(0).equalsIgnoreCase("logout")) {
             logOutService.logOut(getCookieId(cookieData));
+//            httpExchange.getResponseHeaders().add("Set-Cookie", "Expires=" + LocalDateTime.now());
 
         }else if(logInService.validateUserData(parsedFormData)){ //if user login and password are valid
-            template = JtwigTemplate.classpathTemplate("templates/logout.twig");
-            model.with("userName", parsedFormData.get(0));
-            logIn(httpExchange, parsedFormData, cookieData);
+            if(logIn(httpExchange, parsedFormData, cookieData)){
+                template = JtwigTemplate.classpathTemplate("templates/logout.twig");
+                model.with("userName", parsedFormData.get(0));
+            }
         }
 
         return template;
     }
 
-    private void logIn(HttpExchange httpExchange, List<String> userData, String cookieData){
-//        String clientIp = getClientIp(httpExchange);
+    private boolean logIn(HttpExchange httpExchange, List<String> userData, String cookieData){
+        boolean isLogInSuccessful = true;
 
         if(cookieData == null){ //if cookies were cleared, create new  //add handling login from new device
             String newCookieId = logInService.firstLogIn(userData);
@@ -97,18 +100,23 @@ public class Login implements HttpHandler {
 
         }else{
             String cookieId = getCookieId(cookieData);
-
-            if(!logInService.isCookieValidForCurrentUser(cookieId, userData)){ //if current cookie does not belong to user, who is loggin in
-                cookieId = logInService.getUsersCookieId(userData);
-                setResponseCookie(httpExchange, cookieId);
+            if(logInService.isCookieValid(cookieId)){
+                if(logInService.isCookieValidForCurrentUser(cookieId, userData)){ //if current cookie does not belong to user, who is logging in
+                    setResponseCookie(httpExchange, cookieId);
+                    logInService.nextLogIn(cookieId);
+                }else {
+                    //if cookie id is valid at all, but not for given user, get valid user cookie id.
+                    // How to choose, wich cookie is valid for current machine if user can generate new cookie for each machine?
+                    //Creating new cookie every time as a placeholder action:
+                    String newCookieId = logInService.firstLogIn(userData);
+                    setResponseCookie(httpExchange, newCookieId);
+                }
+            }else {
+                String newCookieId = logInService.firstLogIn(userData);
+                setResponseCookie(httpExchange, newCookieId);
             }
-
-            logInService.nextLogIn(cookieId);
         }
-    }
-
-    private String getClientIp(HttpExchange httpExchange){
-        return httpExchange.getLocalAddress().toString().replaceAll("/", "");
+        return isLogInSuccessful;
     }
 
     private void setResponseCookie(HttpExchange httpExchange, String cookieId){
